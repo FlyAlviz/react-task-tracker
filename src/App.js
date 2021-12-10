@@ -5,6 +5,7 @@ import Tasks from "./components/Tasks";
 import Addtask from './components/Addtask';
 
 function App() {
+  const [showAddTask, setShowAddTask] = useState(true)
   const [tasks, setTasks] = useState([{
     id:1,
     text:'Doctors Appointshit',
@@ -25,9 +26,15 @@ function App() {
  }])
 
 
+//  addTask
+const addTask = (task) => {
+  const id = Date.now();
+  task.id = id;
+  setTasks([...tasks,task])
+}
+
 //  Delete Task
  const deleteTask = (id) => {
-   console.log(id)
    setTasks(tasks.filter((task) => task.id !== id))
  }
 
@@ -38,8 +45,8 @@ function App() {
 
   return (
     <div className="container">
-      <Header />
-      <Addtask />
+      <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask}/>
+     {showAddTask && <Addtask onAdd={addTask}/>}
       {tasks.length > 0 ? (<Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder}/>) : ('No Tasks to show')}
     </div>
   );
